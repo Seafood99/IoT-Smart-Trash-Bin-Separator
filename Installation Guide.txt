@@ -1,73 +1,18 @@
-#include <Wire.h>
-#include <LiquidCrystal_I2C.h>
-#include <Servo.h>
+**Installation Guide:**
 
-// Deklarasi pin
-const int trigPin = 2;
-const int echoPin = 3;
-const int servoPin = 9;
-const int proximityPin = 10;
+1. Extract the Arduino file only; leave the other files in zip format.
 
-Servo myServo;
-LiquidCrystal_I2C lcd(0x27, 16, 2); // Address 0x27 dan layar 16x2
+2. Install the Arduino IDE application. If you receive a notification to update the Arduino IDE, go ahead and update it.
 
-void setup() {
-  // Inisialisasi pin
-  pinMode(trigPin, OUTPUT);
-  pinMode(echoPin, INPUT);
-  pinMode(proximityPin, INPUT);
-  
-  // Inisialisasi LCD
-  lcd.begin(16, 2);
-  lcd.backlight();
-  
-  // Inisialisasi Servo
-  myServo.attach(servoPin);
-  myServo.write(90); // Posisi servo di tengah
+3. After the installation is complete, copy the following link: 
+`http://arduino.esp8266.com/stable/package_esp8266com_index.json`.
 
-  // Inisialisasi Serial Monitor
-  Serial.begin(9600);
-}
+4. Open the Arduino IDE, then go to File -> Preferences -> Additional Boards Manager URLs, and paste the copied link.
 
-void loop() {
-  // Menghitung jarak
-  digitalWrite(trigPin, LOW);
-  delayMicroseconds(2);
-  digitalWrite(trigPin, HIGH);
-  delayMicroseconds(10);
-  digitalWrite(trigPin, LOW);
-  
-  long duration = pulseIn(echoPin, HIGH);
-  float distance = duration * 0.034 / 2;
-  
-  // Baca nilai dari proximity sensor
-  int proximityValue = digitalRead(proximityPin);
-  
-  if (distance <= 5) {
-    if (proximityValue == HIGH) { // Anorganik (logam)
-      myServo.write(0); // Servo bergerak ke kiri
-      lcd.clear();
-      lcd.print("Anorganik");
-      lcd.setCursor(0, 1);
-      lcd.print("Pemisah Kiri");
-      
-      // Tampilkan di Serial Monitor
-      Serial.println("Ini adalah sampah anorganik");
-      Serial.println("Pemisah bergerak ke kiri");
-    } else { // Organik (non-logam)
-      myServo.write(180); // Servo bergerak ke kanan
-      lcd.clear();
-      lcd.print("Organik");
-      lcd.setCursor(0, 1);
-      lcd.print("Pemisah Kanan");
-      
-      // Tampilkan di Serial Monitor
-      Serial.println("Ini adalah sampah organik");
-      Serial.println("Pemisah bergerak ke kanan");
-    }
-  } else {
-    myServo.write(90); // Servo kembali ke posisi tengah
-  }
-  
-  delay(1000); // Tunda 1 detik sebelum loop berikutnya
-}
+5. Open the Library Manager. The Library Manager icon looks like a stack of books.
+
+6. Search for the library by typing "Servo". You will find the "Servo" library by Michael Margolis. Then, install that library.
+
+7. Go to Sketch -> Include Library -> Add .ZIP Library. Add the "LiquidCrystalI2C" and "CapacitiveSensor" zip files.
+
+8. All done!
